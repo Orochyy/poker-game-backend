@@ -1,0 +1,28 @@
+version: '3.8'
+
+services:
+  web:
+    container_name: poker
+    build:
+      context: .
+    image: poker-system
+    command: /bin/sh -c "go run server.go"
+    env_file: .env
+    ports:
+      - 8080:8080
+    volumes:
+      - .:/app
+    depends_on:
+      - db
+  db:
+    container_name: db
+    image: postgres
+    env_file: .env
+    ports:
+      - 5433:5432
+    volumes:
+        - data-sql:/var/lib/postgresql
+
+volumes:
+  data-sql:
+    driver: local
