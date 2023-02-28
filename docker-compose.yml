@@ -15,7 +15,7 @@ services:
     depends_on:
       - db
   db:
-    container_name: db
+    container_name: db-poker
     image: postgres
     env_file: .env
     ports:
