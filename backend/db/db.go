@@ -198,7 +198,7 @@ func initDefaultData(db *gorm.DB) {
 var DB *gorm.DB
 
 func InitDB() error {
-	var dbConnection *gorm.DB
+	//var dbConnection *gorm.DB
 	var err error
 
 	errEnv := godotenv.Load()
@@ -212,7 +212,7 @@ func InitDB() error {
 	dbName := os.Getenv("POSTGRES_DB")
 
 	dsn := fmt.Sprintf("host=%s user=%s password=%s dbname=%s port=5432 sslmode=disable TimeZone=Asia/Shanghai", dbHost, dbUser, dbPass, dbName)
-	_, err = gorm.Open(postgres.Open(dsn), &gorm.Config{})
+	db, err := gorm.Open(postgres.Open(dsn), &gorm.Config{})
 
 	if err != nil {
 		return err
@@ -222,21 +222,21 @@ func InitDB() error {
 		return errors.New("Can not connect to the database")
 	}
 
-	dbConnection.AutoMigrate(&User{})
-	dbConnection.AutoMigrate(&Action{})
-	dbConnection.AutoMigrate(&Combination{})
-	dbConnection.AutoMigrate(&Card{})
-	dbConnection.AutoMigrate(&CombinationDetail{})
-	dbConnection.AutoMigrate(&Room{})
-	dbConnection.AutoMigrate(&WaitingList{})
-	dbConnection.AutoMigrate(&Table{})
-	dbConnection.AutoMigrate(&BetHistory{})
-	dbConnection.AutoMigrate(&UsersTablesCard{})
-	dbConnection.AutoMigrate(&UsersTablesCombination{})
-	dbConnection.AutoMigrate(&CombinationDetailsCard{})
+	db.AutoMigrate(&User{})
+	db.AutoMigrate(&Action{})
+	db.AutoMigrate(&Combination{})
+	db.AutoMigrate(&Card{})
+	db.AutoMigrate(&CombinationDetail{})
+	db.AutoMigrate(&Room{})
+	db.AutoMigrate(&WaitingList{})
+	db.AutoMigrate(&Table{})
+	db.AutoMigrate(&BetHistory{})
+	db.AutoMigrate(&UsersTablesCard{})
+	db.AutoMigrate(&UsersTablesCombination{})
+	db.AutoMigrate(&CombinationDetailsCard{})
 
-	initDefaultData(dbConnection)
+	initDefaultData(db)
 
-	DB = dbConnection
+	DB = db
 	return nil
 }
