@@ -7,8 +7,8 @@ import (
 	"os"
 	"poker-game-backend/backend/constants"
 	"poker-game-backend/backend/db"
-	"simple-poker-game/backend/routes"
-	"simple-poker-game/backend/secure"
+	"poker-game-backend/backend/routes"
+	"poker-game-backend/backend/secure"
 	"strconv"
 )
 
