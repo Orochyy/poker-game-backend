@@ -3,7 +3,7 @@ package auth
 import (
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v3"
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"os"
 	"poker-game-backend/backend/constants"
 	"poker-game-backend/backend/db"
