@@ -2,6 +2,7 @@ package room
 
 import (
 	"errors"
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	"gorm.io/gorm"
 	"math/rand"
@@ -196,6 +197,7 @@ func CreateNewRoomHandler(c *fiber.Ctx) error {
 
 	// invalid user
 	if body.UserID == 0 {
+		fmt.Println(body.UserID)
 		e := routes.NewErrorResponse([]string{"User id is not valid."})
 		return c.Status(fiber.StatusBadRequest).JSON(e)
 	}
@@ -610,6 +612,7 @@ func GetTableHandler(c *fiber.Ctx) error {
 	}
 
 	c.QueryParser(&query)
+	fmt.Println(query.UserID)
 	if query.UserID == 0 {
 		e := routes.NewErrorResponse(
 			[]string{"Please provide your user id"})
