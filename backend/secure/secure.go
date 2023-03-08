@@ -1,7 +1,7 @@
 package secure
 
 import (
-	"github.com/golang-jwt/jwt"
+	"github.com/golang-jwt/jwt/v4"
 	"golang.org/x/crypto/bcrypt"
 	"os"
 	"strconv"
