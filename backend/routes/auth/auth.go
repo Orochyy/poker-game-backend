@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/golang-jwt/jwt"
@@ -144,13 +145,15 @@ func GetUserHandler(c *fiber.Ctx) error {
 
 	// get user in db
 	user, ok := getUserById(id)
+	fmt.Println(user)
 	if !ok {
 		e := routes.NewErrorResponse([]string{"User does not exist."})
 		return c.Status(fiber.StatusBadRequest).JSON(e)
 	}
-
+	fmt.Println(user)
 	// check correct owner
 	token := c.Locals("token").(*jwt.Token)
+	fmt.Println(token)
 	claims := token.Claims.(jwt.MapClaims)
 	username := claims["usr"]
 
