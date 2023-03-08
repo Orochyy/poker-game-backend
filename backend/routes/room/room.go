@@ -197,7 +197,6 @@ func CreateNewRoomHandler(c *fiber.Ctx) error {
 
 	// invalid user
 	if body.UserID == 0 {
-		fmt.Println(body.UserID)
 		e := routes.NewErrorResponse([]string{"User id is not valid."})
 		return c.Status(fiber.StatusBadRequest).JSON(e)
 	}
