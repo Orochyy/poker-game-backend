@@ -1,0 +1,145 @@
+<div>
+    <input type="checkbox" name="announcement" onclick="manegeSubscribe(this)">
+    <label>announcement</label>
+</div>
+<div>
+    <input type="checkbox" name="chat" onclick="manegeSubscribe(this)">
+    <label>chat</label>
+</div>
+<div>
+    <input type="checkbox" name="connected" onclick="manegeSubscribe(this)">
+    <label>connected</label>
+</div>
+<div>
+    <input type="checkbox" name="funding" onclick="manegeSubscribe(this)">
+    <label>funding</label>
+</div>
+<div>
+    <input type="checkbox" name="instrument" onclick="manegeSubscribe(this)">
+    <label>instrument</label>
+</div>
+<div>
+    <input type="checkbox" name="insurance" onclick="manegeSubscribe(this)">
+    <label>insurance</label>
+</div>
+<div>
+    <input type="checkbox" name="liquidation" onclick="manegeSubscribe(this)">
+    <label>liquidation</label>
+</div>
+<div>
+    <input type="checkbox" name="orderBookL2_25" onclick="manegeSubscribe(this)">
+    <label>orderBookL2_25</label>
+</div>
+<div>
+    <input type="checkbox" name="orderBookL2" onclick="manegeSubscribe(this)">
+    <label>orderBookL2</label>
+</div>
+<div>
+    <input type="checkbox" name="orderBook10" onclick="manegeSubscribe(this)">
+    <label>orderBook10</label>
+</div>
+<div>
+    <input type="checkbox" name="publicNotifications" onclick="manegeSubscribe(this)">
+    <label>publicNotifications</label>
+</div>
+<div>
+    <input type="checkbox" name="quote" onclick="manegeSubscribe(this)">
+    <label>quote</label>
+</div>
+<div>
+    <input type="checkbox" name="quoteBin1m" onclick="manegeSubscribe(this)">
+    <label>quoteBin1m</label>
+</div>
+<div>
+    <input type="checkbox" name="quoteBin5m" onclick="manegeSubscribe(this)">
+    <label>quoteBin5m</label>
+</div>
+<div>
+    <input type="checkbox" name="quoteBin1h" onclick="manegeSubscribe(this)">
+    <label>quoteBin1h</label>
+</div>
+<div>
+    <input type="checkbox" name="quoteBin1d" onclick="manegeSubscribe(this)">
+    <label>quoteBin1d</label>
+</div>
+<div>
+    <input type="checkbox" name="settlement" onclick="manegeSubscribe(this)">
+    <label>settlement</label>
+</div>
+<div>
+    <input type="checkbox" name="trade" onclick="manegeSubscribe(this)">
+    <label>trade</label>
+</div>
+<div>
+    <input type="checkbox" name="tradeBin1m" onclick="manegeSubscribe(this)">
+    <label>tradeBin1m</label>
+</div>
+<div>
+    <input type="checkbox" name="tradeBin5m" onclick="manegeSubscribe(this)">
+    <label>tradeBin5m</label>
+</div>
+<div>
+    <input type="checkbox" name="tradeBin1h" onclick="manegeSubscribe(this)">
+    <label>tradeBin1h</label>
+</div>
+<div>
+    <input type="checkbox" name="tradeBin1d" onclick="manegeSubscribe(this)">
+    <label>tradeBin1d</label>
+</div>
+<p id="tmp"></p>
+</body>
+
+<script>
+
+    if (localStorage.getItem("token") === null) {
+        window.location.href = 'http://127.0.0.1:8080/api/auth/login';
+    }
+    let socket = new WebSocket("wss://ws.testnet.bitmex.com/realtime");
+
+    socket.onopen = function (e) {
+        console.log("[open] Connection established");
+        console.log("Sending to server");
+    };
+
+    socket.onmessage = function (event) {
+        console.log(`[message] Data received from server: ${event.data}`);
+        document.getElementById('tmp').textContent = `[message] Data received from server: ${event.data}`;
+    };
+
+    socket.onclose = function (event) {
+        if (event.wasClean) {
+            console.log(`[close] Connection closed cleanly, code=${event.code} reason=${event.reason}`);
+        } else {
+            console.log('[close] Connection died');
+        }
+    };
+
+    socket.onerror = function (error) {
+        console.log(`[error] ${error.message}`);
+    };
+
+
+    function manegeSubscribe(e) {
+        let action = e.checked ? "subscribe" : "unsubscribe";
+        let topic = e.name;
+        let payload;
+        payload = {"op": action, "args": [topic]}
+        let payloadStr = JSON.stringify(payload);
+        socket.send(payloadStr)
+    }
+
+
+    setInterval(function (){
+        let token = localStorage.getItem("token");
+        let result = checkToken(token);
+        if (!result){
+            window.location.href = 'http://127.0.0.1:8080/api/auth/login';
+        }
+    },2000)
+
+    function checkToken(token){
+        // need create request for valid token to back-end
+        // var token
+        return true;
+    }
+</script>
