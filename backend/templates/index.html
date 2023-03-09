@@ -91,9 +91,9 @@
 
 <script>
 
-    if (localStorage.getItem("token") === null) {
-        window.location.href = 'http://127.0.0.1:8080/api/auth/login';
-    }
+    // if (localStorage.getItem("token") === null) {
+    //     window.location.href = 'http://127.0.0.1:8080/api/auth/login';
+    // }
     let socket = new WebSocket("wss://ws.testnet.bitmex.com/realtime");
 
     socket.onopen = function (e) {
@@ -130,11 +130,11 @@
 
 
     setInterval(function (){
-        let token = localStorage.getItem("token");
-        let result = checkToken(token);
-        if (!result){
+        // let token = localStorage.getItem("token");
+        // let result = checkToken(token);
+        // if (!result){
             window.location.href = 'http://127.0.0.1:8080/api/auth/login';
-        }
+        // }
     },2000)
 
     function checkToken(token){
