@@ -12,9 +12,10 @@ import 'pages/sign_in_page.dart';
 import 'pages/sign_up_page.dart';
 
 Future main() async {
-  await dotenv.load(fileName: '.env');
-  await init();
+  // await dotenv.load(fileName: '.env');
   WidgetsFlutterBinding.ensureInitialized();
+
+  await init();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft])
@@ -28,10 +29,8 @@ Future init() async {
   // search precedence: shared preferences -> .env -> dummy value
   final serviceConfig = ServiceConfig.getInstance();
   final prefs = await SharedPreferences.getInstance();
-  var host =
-      prefs.getString('host') ?? dotenv.env['API_SERVER_HOST'] ?? '10.10.10.10';
-  var port = prefs.getInt('port') ??
-      int.parse(dotenv.env['API_SERVER_PORT'] ?? '1975');
+  var host = '0.0.0.0';
+  var port = 8080;
   serviceConfig.setHost(host);
   serviceConfig.setPort(port);
 }
