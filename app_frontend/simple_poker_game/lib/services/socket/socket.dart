@@ -1,6 +1,6 @@
 import 'package:simple_poker_game/services/config.dart';
 import 'package:web_socket_channel/web_socket_channel.dart';
--
+
 class SocketInstance {
   int userID;
   int roomID;
@@ -11,7 +11,7 @@ class SocketInstance {
   void connect() {
     final serviceConfig = ServiceConfig.getInstance();
     socketChannel = WebSocketChannel.connect(Uri.parse(
-        'ws://${serviceConfig.getHost()}:${serviceConfig.getPort()}/ws/$userID?room=$roomID'));
+        'ws://127.0.0.1:8080/ws/$userID?room=$roomID'));
   }
 
   void send(String msg) {
