@@ -34,6 +34,7 @@ class SignInFormState extends State<SignInForm> {
                 )))
         : Form(
             key: _formKey,
+    child: SingleChildScrollView(  // fix padding problem but looks like shit (mb later remove 37 and 121 lines)
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -117,6 +118,7 @@ class SignInFormState extends State<SignInForm> {
                         child: const Text('Sign in')))
               ],
             ),
-          );
+        ),
+    );
   }
 }
