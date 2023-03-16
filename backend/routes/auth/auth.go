@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"fmt"
 	"github.com/gofiber/fiber/v2"
 	jwtware "github.com/gofiber/jwt/v3"
 	"github.com/golang-jwt/jwt/v4"
@@ -132,6 +133,8 @@ func SignInHandler(c *fiber.Ctx) error {
 		AccessToken: tokenString,
 		UserID:      userID,
 	}
+
+	fmt.Println("try to sign in")
 	return c.Status(fiber.StatusCreated).JSON(response)
 }
 
