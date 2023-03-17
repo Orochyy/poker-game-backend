@@ -12,10 +12,9 @@ import 'pages/sign_in_page.dart';
 import 'pages/sign_up_page.dart';
 
 Future main() async {
-  // await dotenv.load(fileName: '.env');
-  WidgetsFlutterBinding.ensureInitialized();
-
+  await dotenv.load(fileName: '.env');
   await init();
+  WidgetsFlutterBinding.ensureInitialized();
 
   SystemChrome.setEnabledSystemUIMode(SystemUiMode.immersiveSticky);
   SystemChrome.setPreferredOrientations([DeviceOrientation.landscapeLeft])
@@ -29,10 +28,16 @@ Future init() async {
   // search precedence: shared preferences -> .env -> dummy value
   final serviceConfig = ServiceConfig.getInstance();
   final prefs = await SharedPreferences.getInstance();
-  var host = '0.0.0.0';
-  var port = 8080;
+  var host =
+      prefs.getString('host') ?? dotenv.env['API_SERVER_HOST'] ?? '10.10.10.10';
+  var port = prefs.getInt('port') ??
+      int.parse(dotenv.env['API_SERVER_PORT'] ?? '1975');
   serviceConfig.setHost(host);
   serviceConfig.setPort(port);
+  print(host);
+  print(port);
+  print(dotenv.env['API_SERVER_HOST']);
+  print(dotenv.env['API_SERVER_PORT']);
 }
 
 class MyApp extends StatelessWidget {
@@ -44,9 +49,9 @@ class MyApp extends StatelessWidget {
       SignInPage.routeName: (BuildContext context) => const SignInPage(),
       SignUpPage.routeName: (BuildContext context) => const SignUpPage(),
       TexasHoldemPage.routeName: (BuildContext context) =>
-          const TexasHoldemPage(),
+      const TexasHoldemPage(),
       RoomTexasHoldemPage.routeName: (BuildContext context) =>
-          const RoomTexasHoldemPage(),
+      const RoomTexasHoldemPage(),
       SettingPage.routeName: (BuildContext context) => const SettingPage(),
     };
     return MaterialApp(
