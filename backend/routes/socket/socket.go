@@ -37,9 +37,11 @@ var tableUsersTurn map[int][]UserTurn = make(map[int][]UserTurn)
 func startNewGame(room *db.Room, userID int) {
 	roomID := int(room.ID)
 	// not the owner can not issue "start" command
+	fmt.Println("zaluoa do")
 	if room.UserID != uint(userID) {
 		return
 	}
+	fmt.Println("zalupa pislya")
 	/* Set up Stage 0
 	- create new table.
 	- add ready users to table.
