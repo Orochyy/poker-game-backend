@@ -151,3 +151,80 @@
         background-color: #0d2456 \9 !important;
     }
 </style>
+<script>
+    const { utf8 } = require('dart:convert');
+    const { CompactHttpClient } = require('../compact_http_client');
+    const { AppLocalStorage } = require('../../services/local_storage/local_storage');
+    const { User } = require('../../models/user');
+
+    class UserCredential {
+        constructor({ username = '', password = '' } = {}) {
+            this.username = username;
+            this.password = password;
+        }
+    }
+
+    class Authentication {
+        constructor({ accessToken = '', userID = 0 } = {}) {
+            this.accessToken = accessToken;
+            this.userID = userID;
+        }
+    }
+
+    class AuthService {
+        static _userEndPoint = '/user';
+        static _authEndPoint = '/auth';
+
+        static async signUp(credential) {
+            const requestBody = JSON.stringify({
+                username: credential.username,
+                password: credential.password
+            });
+            const response = await CompactHttpClient.post(requestBody, AuthService._userEndPoint);
+            const responseBody = await response.text();
+
+            if (response.status === 400) {
+                const errors = JSON.parse(responseBody).error_messages;
+                throw new Error(errors[0]);
+            }
+
+            return new User(JSON.parse(responseBody));
+        }
+
+        static async signIn(credential) {
+            const requestBody = JSON.stringify({
+                username: credential.username,
+                password: credential.password
+            });
+            const response = await CompactHttpClient.post(requestBody, AuthService._authEndPoint);
+            const responseBody = await response.text();
+
+            if (response.status === 400) {
+                const errors = JSON.parse(responseBody).error_messages;
+                throw new Error(errors[0]);
+            }
+
+            const accessToken = JSON.parse(responseBody).access_token;
+            const userID = JSON.parse(responseBody).user_id;
+
+            const authentication = new Authentication({ userID, accessToken });
+            return authentication;
+        }
+
+        static async getUser(userID) {
+            const accessToken = AppLocalStorage.getItem('access_token');
+            const response = await CompactHttpClient.get(`/${userID}`, AuthService._userEndPoint, accessToken);
+            const responseBody = await response.text();
+
+            const user = new User(JSON.parse(responseBody));
+            return user;
+        }
+    }
+
+    module.exports = {
+        UserCredential,
+        Authentication,
+        AuthService
+    };
+
+</script>
