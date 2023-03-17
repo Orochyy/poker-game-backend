@@ -9,17 +9,21 @@ class ServiceConfig {
 
   void setHost(String host) {
     this.host = host;
+    print(host);
   }
 
   void setPort(int port) {
     this.port = port;
+    print(port);
   }
 
   String getHost() {
+    print(host);
     return host;
   }
 
   int getPort() {
+    print(port);
     return port;
   }
 }
