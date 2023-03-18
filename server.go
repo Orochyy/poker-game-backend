@@ -23,9 +23,13 @@ func main() {
 		return
 	}
 	app := fiber.New()
-
 	// non-restricted
 	app.Post("/user", authRouter.SignUpHandler)
+	app.Get("/main", func(ctx *fiber.Ctx) error {
+		return ctx.Render("./backend/templates/login.html", fiber.Map{
+			"title": "Home Page",
+		})
+	})
 	app.Post("/auth", authRouter.SignInHandler)
 	app.Get("/room", roomRouter.GetListRoomsHandler)
 	app.Get("/room/:id", roomRouter.GetSpecificRoomHandler)
@@ -55,5 +59,6 @@ func main() {
 	app.Get("/table/:id", roomRouter.GetTableHandler)
 	app.Post("/table/:id", roomRouter.PerformActionHandler)
 
+	//ip := "0.0.0.0"
 	app.Listen(":8080")
 }
